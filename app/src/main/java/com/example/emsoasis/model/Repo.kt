@@ -8,11 +8,12 @@ import io.reactivex.schedulers.Schedulers
 class Repo(val appService: AppService, val appDao: AppDao, val sharedPreferences: SharedPreferences){
 
     init {
+
         updateEventsData().subscribe()
     }
 
     fun updateEventsData(): Completable{
-        return appService.getAllEvents("").subscribeOn(Schedulers.io())
+        return appService.getAllEvents(sharedPreferences.getString("JWT", "")!!).subscribeOn(Schedulers.io())
             .doOnSuccess {response ->
 
                 when(response.code()){
