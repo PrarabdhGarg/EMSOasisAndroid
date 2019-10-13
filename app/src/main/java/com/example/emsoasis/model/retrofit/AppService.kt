@@ -21,6 +21,11 @@ interface AppService {
     @GET("events/{eventId}/team/{teamId}/details")
     fun getTeamMembers(@Header("Authorization") jwt: String, @Path("eventId")eventId: Int, @Path("teamId")teamId: Int): Single<Response<AllMemberPojo>>
 
+    @POST("events/{eventId}/team/add")
+    fun addTeam(@Header("Authorization") jwt: String, @Path("eventId")eventId: Int, @Body body: JsonObject): Single<Response<Void>>
+
+    @POST("events/{eventId}/team/{teamId}/update")
+    fun addMember(@Header("Authorization") jwt: String, @Path("eventId")eventId: Int, @Path("teamId")teamId: Int, @Body body: JsonObject): Single<Response<Void>>
 
     // events/"eventid"/team/"teamId"/details
     //  Authorization":"Bearer $jwtToken
