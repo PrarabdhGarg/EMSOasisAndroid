@@ -37,7 +37,7 @@ class TeamActivity : AppCompatActivity(), TeamAdapter.OnTeamClicked {
         }
     }
 
-    override fun openTeamDetails() {
-        startActivity(Intent())
+    override fun openTeamDetails(teamId: Int) {
+        startActivity(Intent(this, MemberActivity::class.java))
     }
 }

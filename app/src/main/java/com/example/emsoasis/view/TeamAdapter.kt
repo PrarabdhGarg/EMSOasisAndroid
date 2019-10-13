@@ -14,7 +14,7 @@ class TeamAdapter(private val listener: OnTeamClicked): RecyclerView.Adapter<Tea
     var teams: List<TeamPojo> = emptyList()
 
     interface OnTeamClicked{
-        fun openTeamDetails()
+        fun openTeamDetails(teamId: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamViewHolder {
@@ -26,6 +26,9 @@ class TeamAdapter(private val listener: OnTeamClicked): RecyclerView.Adapter<Tea
 
     override fun onBindViewHolder(holder: TeamViewHolder, position: Int) {
         holder.teamName.text = teams[position].name
+        holder.teamName.setOnClickListener {
+            listener.openTeamDetails(teams[position].id)
+        }
     }
 
     inner class TeamViewHolder(view: View): RecyclerView.ViewHolder(view){

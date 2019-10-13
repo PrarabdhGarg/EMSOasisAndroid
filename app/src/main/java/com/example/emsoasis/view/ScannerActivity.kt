@@ -53,7 +53,7 @@ class ScannerActivity : AppCompatActivity() {
         codeScanner.isFlashEnabled = false
 
         codeScanner.decodeCallback = DecodeCallback {
-
+            it.text
         }
 
         codeScanner.errorCallback = ErrorCallback {

@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.emsoasis.asMut
-import com.example.emsoasis.model.AppService
+import com.example.emsoasis.model.retrofit.AppService
 import com.google.gson.JsonObject
 import io.reactivex.schedulers.Schedulers
 import org.json.JSONObject

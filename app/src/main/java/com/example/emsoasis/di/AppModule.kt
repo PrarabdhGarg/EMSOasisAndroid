@@ -6,8 +6,8 @@ import android.content.SharedPreferences
 import androidx.room.Room
 import com.example.emsoasis.AppDatabase
 import com.example.emsoasis.BaseInterceptor
-import com.example.emsoasis.model.AppDao
-import com.example.emsoasis.model.AppService
+import com.example.emsoasis.model.room.AppDao
+import com.example.emsoasis.model.retrofit.AppService
 import com.example.emsoasis.model.Repo
 import dagger.Module
 import dagger.Provides
@@ -28,7 +28,7 @@ class AppModule(private val application: Application) {
 
     @Provides
     @Singleton
-    fun provideAppService(retrofit: Retrofit): AppService{
+    fun provideAppService(retrofit: Retrofit): AppService {
         return retrofit.create(AppService::class.java)
     }
 
@@ -51,7 +51,7 @@ class AppModule(private val application: Application) {
 
     @Provides
     @Singleton
-    fun provideAppDao(appDatabase: AppDatabase): AppDao{
+    fun provideAppDao(appDatabase: AppDatabase): AppDao {
         return appDatabase.appDao()
     }
 

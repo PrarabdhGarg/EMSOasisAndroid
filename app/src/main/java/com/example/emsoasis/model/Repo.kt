@@ -1,9 +1,11 @@
 package com.example.emsoasis.model
 
 import android.content.SharedPreferences
+import com.example.emsoasis.model.retrofit.AllMemberPojo
 import com.example.emsoasis.model.retrofit.AllTeamPojo
+import com.example.emsoasis.model.retrofit.AppService
 import com.example.emsoasis.model.retrofit.EventPojo
-import com.example.emsoasis.model.retrofit.TeamPojo
+import com.example.emsoasis.model.room.AppDao
 import com.example.emsoasis.model.room.EventsData
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -58,4 +60,7 @@ class Repo(val appService: AppService, val appDao: AppDao, val sharedPreferences
         return appService.getEventTeams(sharedPreferences.getString("JWT", "")!!, eventId).subscribeOn(Schedulers.io())
     }
 
+    fun getTeamMembers(eventId: Int, teamId: Int): Single<Response<AllMemberPojo>>{
+        return appService.getTeamMembers(sharedPreferences.getString("JWT", "")!!, eventId, teamId).subscribeOn(Schedulers.io())
+    }
 }
