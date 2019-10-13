@@ -15,12 +15,13 @@ import kotlinx.android.synthetic.main.activity_team.*
 class TeamActivity : AppCompatActivity(), TeamAdapter.OnTeamClicked {
 
     lateinit var teamViewModel: TeamViewModel
+    lateinit var event: EventsData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_team)
 
-        val event = EventsData(id = intent.getIntExtra("eventId", 0), name = intent.getStringExtra("eventName"), minPlayers = intent.getIntExtra("eventMin", 1), maxPlayers = intent.getIntExtra("eventMax", 1))
+        event = EventsData(id = intent.getIntExtra("eventId", 0), name = intent.getStringExtra("eventName"), minPlayers = intent.getIntExtra("eventMin", 1), maxPlayers = intent.getIntExtra("eventMax", 1))
 
         teamViewModel = ViewModelProviders.of(this, TeamViewModelFactory(eventId = event.id))[TeamViewModel::class.java]
 
@@ -38,6 +39,9 @@ class TeamActivity : AppCompatActivity(), TeamAdapter.OnTeamClicked {
     }
 
     override fun openTeamDetails(teamId: Int) {
-        startActivity(Intent(this, MemberActivity::class.java))
+        startActivity(Intent(this, MemberActivity::class.java).also {
+            it.putExtra("eventId", event.id.toString())
+            it.putExtra("teamId", teamId.toString())
+        })
     }
 }
