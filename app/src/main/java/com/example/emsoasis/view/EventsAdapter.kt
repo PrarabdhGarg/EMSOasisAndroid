@@ -6,11 +6,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.emsoasis.R
+import com.example.emsoasis.model.EventsData
 import kotlinx.android.synthetic.main.adapter_events.view.*
 
 class EventsAdapter(): RecyclerView.Adapter<EventsAdapter.EventsViewHolder>(){
 
-    var events: List<String> = emptyList()
+    var events: List<EventsData> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventsViewHolder {
 
@@ -22,7 +23,7 @@ class EventsAdapter(): RecyclerView.Adapter<EventsAdapter.EventsViewHolder>(){
 
     override fun onBindViewHolder(holder: EventsViewHolder, position: Int) {
 
-        holder.eventName.text = events[position]
+        holder.eventName.text = events[position].name
     }
 
     inner class EventsViewHolder(view: View): RecyclerView.ViewHolder(view){
