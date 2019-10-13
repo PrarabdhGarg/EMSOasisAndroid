@@ -1,4 +1,4 @@
-package com.example.emsoasis.model
+package com.example.emsoasis.model.room
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

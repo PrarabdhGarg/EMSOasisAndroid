@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.emsoasis.model.EventsData
+import com.example.emsoasis.model.room.EventsData
 import com.example.emsoasis.model.Repo
 
 @SuppressLint("CheckResult")

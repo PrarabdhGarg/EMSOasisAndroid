@@ -1,6 +1,7 @@
 package com.example.emsoasis.model
 
 import androidx.room.*
+import com.example.emsoasis.model.room.EventsData
 import io.reactivex.Flowable
 
 @Dao

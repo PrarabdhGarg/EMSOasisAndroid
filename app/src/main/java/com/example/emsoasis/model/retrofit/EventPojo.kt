@@ -1,4 +1,4 @@
-package com.example.emsoasis.model
+package com.example.emsoasis.model.retrofit
 
 import com.google.gson.annotations.SerializedName
 

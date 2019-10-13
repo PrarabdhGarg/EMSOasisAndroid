@@ -6,12 +6,16 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.emsoasis.R
-import com.example.emsoasis.model.EventsData
+import com.example.emsoasis.model.room.EventsData
 import kotlinx.android.synthetic.main.adapter_events.view.*
 
-class EventsAdapter(): RecyclerView.Adapter<EventsAdapter.EventsViewHolder>(){
+class EventsAdapter(private val listener: OnEventClick): RecyclerView.Adapter<EventsAdapter.EventsViewHolder>(){
 
     var events: List<EventsData> = emptyList()
+
+    interface OnEventClick{
+        fun changeActivity(event: EventsData)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventsViewHolder {
 
@@ -24,6 +28,9 @@ class EventsAdapter(): RecyclerView.Adapter<EventsAdapter.EventsViewHolder>(){
     override fun onBindViewHolder(holder: EventsViewHolder, position: Int) {
 
         holder.eventName.text = events[position].name
+        holder.eventName.setOnClickListener {
+            listener.changeActivity(events[position])
+        }
     }
 
     inner class EventsViewHolder(view: View): RecyclerView.ViewHolder(view){
