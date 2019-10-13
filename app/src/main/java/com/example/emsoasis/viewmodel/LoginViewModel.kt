@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.emsoasis.model.AppService
 import com.google.gson.JsonObject
 import io.reactivex.schedulers.Schedulers
+import org.json.JSONObject
 
 class LoginViewModel(val loginService: AppService) : ViewModel() {
 
@@ -19,7 +20,8 @@ class LoginViewModel(val loginService: AppService) : ViewModel() {
         }
         loginService.login(body).subscribeOn(Schedulers.io()).subscribe({response ->
             if (response.code() == 200) {
-                var jwt = body.asString
+                var body = JSONObject(response.body().toString())
+
             }
         },{
 
