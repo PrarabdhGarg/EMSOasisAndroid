@@ -34,6 +34,7 @@ class TeamActivity : AppCompatActivity(), TeamAdapter.OnTeamClicked {
         addTeam.setOnClickListener {
             startActivity(Intent(this, ScannerActivity::class.java).also {
                 it.putExtra("type", "team")
+                it.putExtra("eventId", event.id)
             })
         }
     }

@@ -28,6 +28,8 @@ class MemberActivity : AppCompatActivity() {
         button.setOnClickListener {
             startActivity(Intent(this, ScannerActivity::class.java).also {
                 it.putExtra("type", "player")
+                it.putExtra("eventId", eventId)
+                it.putExtra("teamId", teamId)
             })
         }
 

@@ -28,6 +28,8 @@ class ScannerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_scanner)
 
         val type = intent.getStringExtra("type")
+        val eventId = intent.getIntExtra("eventId", 0)
+        val teamId = intent.getIntExtra("teamId", 0)
         scannerViewModel = ViewModelProviders.of(this, ScannerViewModelFactory())[ScannerViewModel::class.java]
 
         if (ContextCompat.checkSelfPermission(
@@ -53,6 +55,21 @@ class ScannerActivity : AppCompatActivity() {
         codeScanner.decodeCallback = DecodeCallback {
             qrCodes.add(it.text)
         }
+
+//        when(type){
+//            
+//            "team" -> {
+//                scannerViewModel.addTeam(eventId, "", qrCodes.drop(0), qrCodes.first())
+//            }
+//
+//            "player" -> {
+//                scannerViewModel.addMember(eventId, teamId, qrCodes)
+//            }
+//
+//            else -> {
+//
+//            }
+//        }
 
         codeScanner.errorCallback = ErrorCallback {
 
