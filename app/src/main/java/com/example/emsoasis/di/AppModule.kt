@@ -1,5 +1,9 @@
 package com.example.emsoasis.di
 
 import android.app.Application
+import dagger.Module
 
-class AppModule(private val application: Application) {}
+@Module
+class AppModule(private val application: Application) {
+
+}
