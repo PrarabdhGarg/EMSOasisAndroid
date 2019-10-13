@@ -1,11 +1,9 @@
 package com.example.emsoasis.model
 
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import androidx.room.Transaction
+import androidx.room.*
 import io.reactivex.Flowable
 
+@Dao
 interface AppDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
