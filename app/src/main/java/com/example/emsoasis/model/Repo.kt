@@ -1,6 +1,8 @@
 package com.example.emsoasis.model
 
-class Repo{
+import android.content.SharedPreferences
+
+class Repo(val appService: AppService, val appDao: AppDao, val sharedPreferences: SharedPreferences){
 
 
 

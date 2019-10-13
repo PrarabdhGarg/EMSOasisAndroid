@@ -1,12 +1,13 @@
-package com.example.emsoasis.login
+package com.example.emsoasis.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.emsoasis.model.AppService
 import com.google.gson.JsonObject
 import io.reactivex.schedulers.Schedulers
 
-class LoginViewModel(val loginService: LoginService) : ViewModel() {
+class LoginViewModel(val loginService: AppService) : ViewModel() {
 
     var error: LiveData<String> = MutableLiveData()
     var isLoading: LiveData<Boolean> = MutableLiveData()
