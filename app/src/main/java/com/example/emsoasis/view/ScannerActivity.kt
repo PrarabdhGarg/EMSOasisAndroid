@@ -72,9 +72,13 @@ class ScannerActivity : AppCompatActivity() {
                 qrCodes = LinkedHashSet()
                 count.text = "Count: ${qrCodes.toList().size}"
             } else {
-                progress_scanner.visibility = View.VISIBLE
-                Toast.makeText(this, "unSucessful", Toast.LENGTH_LONG).show()
+                progress_scanner.visibility = View.INVISIBLE
+                // Toast.makeText(this, "unSucessful", Toast.LENGTH_LONG).show()
             }
+        })
+
+        scannerViewModel.error.observe(this, Observer {
+            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
         })
 
        bttn_add.setOnClickListener {
