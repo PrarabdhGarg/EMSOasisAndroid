@@ -54,22 +54,27 @@ class ScannerActivity : AppCompatActivity() {
 
         codeScanner.decodeCallback = DecodeCallback {
             qrCodes.add(it.text)
+            count.text = "Count: ${qrCodes.size}"
         }
 
-//        when(type){
-//            
-//            "team" -> {
-//                scannerViewModel.addTeam(eventId, "", qrCodes.drop(0), qrCodes.first())
-//            }
-//
-//            "player" -> {
-//                scannerViewModel.addMember(eventId, teamId, qrCodes)
-//            }
-//
-//            else -> {
-//
-//            }
-//        }
+        // Add in button
+
+        when(type){
+
+            "team" -> {
+                scannerViewModel.addTeam(eventId, name.text.toString(), qrCodes.drop(0), qrCodes.first())
+                qrCodes = arrayListOf()
+            }
+
+            "player" -> {
+                scannerViewModel.addMember(eventId, teamId, qrCodes)
+                qrCodes = arrayListOf()
+            }
+
+            else -> {
+                qrCodes = arrayListOf()
+            }
+        }
 
         codeScanner.errorCallback = ErrorCallback {
 
