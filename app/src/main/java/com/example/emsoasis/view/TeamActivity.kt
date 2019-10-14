@@ -3,6 +3,7 @@ package com.example.emsoasis.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -37,6 +38,12 @@ class TeamActivity : AppCompatActivity(), TeamAdapter.OnTeamClicked {
                 it.putExtra("eventId", event.id)
             })
         }
+
+        teamViewModel.error.observe(this, Observer {
+            AlertDialog.Builder(this).setTitle("Error").setMessage(it).setNegativeButton("OK") { dialog, which ->
+                dialog.dismiss()
+            }
+        })
     }
 
     override fun openTeamDetails(teamId: Int) {

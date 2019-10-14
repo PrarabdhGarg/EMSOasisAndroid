@@ -3,6 +3,7 @@ package com.example.emsoasis.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.emsoasis.R
@@ -25,6 +26,12 @@ class EventActivity : AppCompatActivity(), EventsAdapter.OnEventClick {
         eventsViewModel.events.observe(this, Observer {
             (events.adapter as EventsAdapter).events = it
             (events.adapter as EventsAdapter).notifyDataSetChanged()
+        })
+
+        eventsViewModel.error.observe(this, Observer {
+            AlertDialog.Builder(this).setTitle("Error").setMessage(it).setNegativeButton("OK") { dialog, which ->
+                dialog.dismiss()
+            }
         })
 
     }
