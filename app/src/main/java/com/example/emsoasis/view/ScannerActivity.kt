@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.budiyev.android.codescanner.AutoFocusMode
 import com.budiyev.android.codescanner.CodeScanner
@@ -19,21 +20,22 @@ import com.example.emsoasis.R
 import com.example.emsoasis.viewmodel.ScannerViewModel
 import com.example.emsoasis.viewmodel.ScannerViewModelFactory
 import kotlinx.android.synthetic.main.activity_scanner.*
+import java.lang.Exception
 import java.util.HashSet
 
 class ScannerActivity : AppCompatActivity() {
 
     private lateinit var codeScanner: CodeScanner
     private lateinit var scannerViewModel: ScannerViewModel
-    var qrCodes: Set<String> = HashSet()
+    var qrCodes: MutableSet<String> = LinkedHashSet()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scanner)
 
         val type = intent.getStringExtra("type")
-        val eventId = intent.getIntExtra("eventId", 0)
-        val teamId = intent.getIntExtra("teamId", 0)
+        val eventId = intent.getStringExtra("eventId")
+        val teamId = intent.getStringExtra("teamId")
         scannerViewModel = ViewModelProviders.of(this, ScannerViewModelFactory())[ScannerViewModel::class.java]
 
         if (type == "player") {
@@ -54,29 +56,53 @@ class ScannerActivity : AppCompatActivity() {
         codeScanner.isFlashEnabled = false
 
         codeScanner.decodeCallback = DecodeCallback {
-            qrCodes.plus(it.text)
-            count.text = "Count: ${qrCodes.size}"
+            Log.d("Scanner Activity", "Decoded code = ${it.text}")
+            qrCodes.add(it.text)
+            runOnUiThread {
+                Log.d("Scanner Activity", "Size of String = ${qrCodes.toList().size}")
+                count.text = "Count: ${qrCodes.toList().size}"
+            }
         }
+
+        scannerViewModel.isSuccessful.observe(this, Observer {
+            if(it) {
+                progress_scanner.visibility = View.INVISIBLE
+                Toast.makeText(this, "Sucessful", Toast.LENGTH_LONG).show()
+                qrCodes = LinkedHashSet()
+                count.text = "Count: ${qrCodes.toList().size}"
+            } else {
+                progress_scanner.visibility = View.VISIBLE
+                Toast.makeText(this, "unSucessful", Toast.LENGTH_LONG).show()
+            }
+        })
 
         // Add in button
 
        bttn_add.setOnClickListener {
-           when(type){
+           try {
+               when (type) {
 
-               "team" -> {
-                   scannerViewModel.addTeam(eventId, name.text.toString(), qrCodes.toList().drop(0), qrCodes.toList().first())
-                   qrCodes = HashSet()
-               }
+                   "team" -> {
+                       scannerViewModel.addTeam(
+                           eventId.toInt(),
+                           name.text.toString(),
+                           qrCodes.toList().drop(0),
+                           qrCodes.toList().first()
+                       )
+                   }
 
-               "player" -> {
-                   scannerViewModel.addMember(eventId, teamId, qrCodes.toList())
-                   qrCodes = HashSet()
-               }
+                   "player" -> {
+                       scannerViewModel.addMember(eventId.toInt(), teamId.toInt(), qrCodes.toList())
+                   }
 
-               else -> {
-                   qrCodes = HashSet()
+                   else -> {
+                       qrCodes = LinkedHashSet()
+                   }
                }
+           } catch (e: Exception) {
+                Log.e("Scanner Activity", "Error in adding button = ${e.toString()}")
            }
+       }
 
            codeScanner.errorCallback = ErrorCallback {
                 Toast.makeText(this, "Error in scanning code", Toast.LENGTH_LONG).show()
@@ -84,10 +110,12 @@ class ScannerActivity : AppCompatActivity() {
            }
 
            scanner.setOnClickListener {
+               it.isClickable = false
+               progress_scanner.visibility = View.VISIBLE
                codeScanner.startPreview()
            }
        }
-    }
+
 
     override fun onPause() {
         super.onPause()

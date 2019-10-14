@@ -1,6 +1,7 @@
 package com.example.emsoasis.model
 
 import android.content.SharedPreferences
+import android.util.Log
 import com.example.emsoasis.model.retrofit.AllMemberPojo
 import com.example.emsoasis.model.retrofit.AllTeamPojo
 import com.example.emsoasis.model.retrofit.AppService
@@ -13,6 +14,7 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import org.json.JSONObject
 import retrofit2.Response
 
 class Repo(val appService: AppService, val appDao: AppDao, val sharedPreferences: SharedPreferences){
@@ -66,23 +68,23 @@ class Repo(val appService: AppService, val appDao: AppDao, val sharedPreferences
         return appService.getTeamMembers(sharedPreferences.getString("JWT", "")!!, eventId, teamId).subscribeOn(Schedulers.io())
     }
 
-    fun addTeam(eventId: Int, name: String, participants: List<String>, leader: String): Completable{
+    fun addTeam(eventId: Int, name: String, participants: List<String>, leader: String): Single<Response<Void>> {
 
-        var body = JsonObject()
-        body.addProperty("name", name)
-        body.addProperty("participants", participants.toString())
-        body.addProperty("leader", leader)
+        var body = HashMap<String, Any>()
+        body.put("name", name)
+        body.put("participants", participants)
+        body.put("leader", leader)
+        Log.d("Repo", "Body sent = ${body}")
 
         return appService.addTeam(sharedPreferences.getString("JWT", "")!!, eventId, body).subscribeOn(Schedulers.io())
-            .ignoreElement()
     }
 
-    fun addMember(eventId: Int, teamId: Int, participants: List<String>): Completable{
+    fun addMember(eventId: Int, teamId: Int, participants: List<String>): Single<Response<Void>>{
 
-        var body = JsonObject()
-        body.addProperty("qr_codes", participants.toString())
+        var body = HashMap<String, Any>()
+        body.put("qr_codes", participants)
+        Log.d("Repo", "Body sent = ${body}")
 
         return appService.addMember(sharedPreferences.getString("JWT", "")!!, eventId, teamId, body).subscribeOn(Schedulers.io())
-            .ignoreElement()
     }
 }

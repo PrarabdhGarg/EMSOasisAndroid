@@ -3,6 +3,7 @@ package com.example.emsoasis.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -23,6 +24,7 @@ class TeamActivity : AppCompatActivity(), TeamAdapter.OnTeamClicked {
         setContentView(R.layout.activity_team)
 
         event = EventsData(id = intent.getIntExtra("eventId", 0), name = intent.getStringExtra("eventName"), minPlayers = intent.getIntExtra("eventMin", 1), maxPlayers = intent.getIntExtra("eventMax", 1))
+        Log.d("Team Activity", "Received Data = $event")
 
         teamViewModel = ViewModelProviders.of(this, TeamViewModelFactory(eventId = event.id))[TeamViewModel::class.java]
 
@@ -47,6 +49,7 @@ class TeamActivity : AppCompatActivity(), TeamAdapter.OnTeamClicked {
     }
 
     override fun openTeamDetails(teamId: Int) {
+        Log.d("Team Activity", "Sending data = $event")
         startActivity(Intent(this, MemberActivity::class.java).also {
             it.putExtra("eventId", event.id.toString())
             it.putExtra("teamId", teamId.toString())

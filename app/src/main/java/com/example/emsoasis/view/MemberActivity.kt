@@ -3,6 +3,7 @@ package com.example.emsoasis.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -21,6 +22,7 @@ class MemberActivity : AppCompatActivity() {
 
         val eventId = intent!!.getStringExtra("eventId")
         val teamId = intent!!.getStringExtra("teamId")
+        Log.d("Member Activity", "Event Id = $eventId, TeamId = $teamId")
 
         val viewModel = ViewModelProviders.of(this, MemberViewModelFactory(eventId = eventId, teamId = teamId))[MemberViewModel::class.java]
 
