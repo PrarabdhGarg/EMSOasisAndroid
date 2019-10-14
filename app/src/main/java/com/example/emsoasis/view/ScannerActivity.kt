@@ -4,6 +4,9 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
@@ -16,12 +19,13 @@ import com.example.emsoasis.R
 import com.example.emsoasis.viewmodel.ScannerViewModel
 import com.example.emsoasis.viewmodel.ScannerViewModelFactory
 import kotlinx.android.synthetic.main.activity_scanner.*
+import java.util.HashSet
 
 class ScannerActivity : AppCompatActivity() {
 
     private lateinit var codeScanner: CodeScanner
     private lateinit var scannerViewModel: ScannerViewModel
-    var qrCodes: MutableList<String> = arrayListOf()
+    var qrCodes: Set<String> = HashSet()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,16 +36,13 @@ class ScannerActivity : AppCompatActivity() {
         val teamId = intent.getIntExtra("teamId", 0)
         scannerViewModel = ViewModelProviders.of(this, ScannerViewModelFactory())[ScannerViewModel::class.java]
 
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.CAMERA
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 100)
+        if (type == "player") {
+            name.visibility = View.INVISIBLE
         }
 
-
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 100)
+        }
 
         codeScanner = CodeScanner(this, scanner)
         codeScanner.camera = CodeScanner.CAMERA_BACK
@@ -53,36 +54,39 @@ class ScannerActivity : AppCompatActivity() {
         codeScanner.isFlashEnabled = false
 
         codeScanner.decodeCallback = DecodeCallback {
-            qrCodes.add(it.text)
+            qrCodes.plus(it.text)
             count.text = "Count: ${qrCodes.size}"
         }
 
         // Add in button
 
-        when(type){
+       bttn_add.setOnClickListener {
+           when(type){
 
-            "team" -> {
-                scannerViewModel.addTeam(eventId, name.text.toString(), qrCodes.drop(0), qrCodes.first())
-                qrCodes = arrayListOf()
-            }
+               "team" -> {
+                   scannerViewModel.addTeam(eventId, name.text.toString(), qrCodes.toList().drop(0), qrCodes.toList().first())
+                   qrCodes = HashSet()
+               }
 
-            "player" -> {
-                scannerViewModel.addMember(eventId, teamId, qrCodes)
-                qrCodes = arrayListOf()
-            }
+               "player" -> {
+                   scannerViewModel.addMember(eventId, teamId, qrCodes.toList())
+                   qrCodes = HashSet()
+               }
 
-            else -> {
-                qrCodes = arrayListOf()
-            }
-        }
+               else -> {
+                   qrCodes = HashSet()
+               }
+           }
 
-        codeScanner.errorCallback = ErrorCallback {
+           codeScanner.errorCallback = ErrorCallback {
+                Toast.makeText(this, "Error in scanning code", Toast.LENGTH_LONG).show()
+               Log.e("Scanner Activity", "Error occoured in Scanning code = ${it.toString()}")
+           }
 
-        }
-
-        scanner.setOnClickListener {
-            codeScanner.startPreview()
-        }
+           scanner.setOnClickListener {
+               codeScanner.startPreview()
+           }
+       }
     }
 
     override fun onPause() {

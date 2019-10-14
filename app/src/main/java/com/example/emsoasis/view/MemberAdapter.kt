@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.emsoasis.R
 import com.example.emsoasis.model.retrofit.MemberPojo
+import kotlinx.android.synthetic.main.adapter_member.view.*
 
 class MemberAdapter(): RecyclerView.Adapter<MemberAdapter.ViewHolder>(){
 
@@ -25,7 +26,7 @@ class MemberAdapter(): RecyclerView.Adapter<MemberAdapter.ViewHolder>(){
     }
 
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view){
-        val name: TextView = view.team
-        val college: TextView = view.college
+        val name: TextView = view.name
+        val college: TextView = view.collage
     }
 }
