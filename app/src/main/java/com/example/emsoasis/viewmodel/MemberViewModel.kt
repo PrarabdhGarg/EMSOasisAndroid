@@ -9,10 +9,14 @@ import com.example.emsoasis.model.Repo
 import com.example.emsoasis.model.retrofit.MemberPojo
 import io.reactivex.schedulers.Schedulers
 
-class MemberViewModel(eventId: String, teamId: String, repo: Repo) : ViewModel() {
+class MemberViewModel(val eventId: String, val teamId: String, val repo: Repo) : ViewModel() {
     var members: LiveData<List<MemberPojo>> = MutableLiveData()
 
     init {
+        refreshEvents()
+    }
+
+    fun refreshEvents(){
         repo.getTeamMembers(eventId = eventId.toInt(), teamId = teamId.toInt()).subscribeOn(Schedulers.io()).subscribe({
             if (it.code() == 200) {
                 members.asMut().postValue(it.body()!!.members)

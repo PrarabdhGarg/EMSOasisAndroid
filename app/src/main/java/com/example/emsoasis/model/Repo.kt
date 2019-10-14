@@ -71,10 +71,10 @@ class Repo(val appService: AppService, val appDao: AppDao, val sharedPreferences
     fun addTeam(eventId: Int, name: String, participants: List<String>, leader: String): Single<Response<Void>> {
 
         var body = HashMap<String, Any>()
-        body.put("name", name)
-        body.put("participants", participants)
-        body.put("leader", leader)
-        Log.d("Repo", "Body sent = ${body}")
+        body["name"] = name
+        body["participants"] = participants
+        body["leader"] = leader
+        Log.d("Repo", "Body sent = $body")
 
         return appService.addTeam(sharedPreferences.getString("JWT", "")!!, eventId, body).subscribeOn(Schedulers.io())
     }
@@ -82,8 +82,8 @@ class Repo(val appService: AppService, val appDao: AppDao, val sharedPreferences
     fun addMember(eventId: Int, teamId: Int, participants: List<String>): Single<Response<Void>>{
 
         var body = HashMap<String, Any>()
-        body.put("qr_codes", participants)
-        Log.d("Repo", "Body sent = ${body}")
+        body["qr_codes"] = participants
+        Log.d("Repo", "Body sent = $body")
 
         return appService.addMember(sharedPreferences.getString("JWT", "")!!, eventId, teamId, body).subscribeOn(Schedulers.io())
     }

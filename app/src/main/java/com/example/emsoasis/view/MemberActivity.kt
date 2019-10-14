@@ -14,6 +14,8 @@ import com.example.emsoasis.viewmodel.MemberViewModelFactory
 
 class MemberActivity : AppCompatActivity() {
 
+    lateinit var viewModel: MemberViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_member)
@@ -24,7 +26,7 @@ class MemberActivity : AppCompatActivity() {
         val teamId = intent!!.getStringExtra("teamId")
         Log.d("Member Activity", "Event Id = $eventId, TeamId = $teamId")
 
-        val viewModel = ViewModelProviders.of(this, MemberViewModelFactory(eventId = eventId, teamId = teamId))[MemberViewModel::class.java]
+        viewModel = ViewModelProviders.of(this, MemberViewModelFactory(eventId = eventId, teamId = teamId))[MemberViewModel::class.java]
 
         val button = findViewById<Button>(R.id.addMember)
         button.setOnClickListener {
@@ -39,5 +41,11 @@ class MemberActivity : AppCompatActivity() {
             (recycler.adapter as MemberAdapter).members = it
             (recycler.adapter as MemberAdapter).notifyDataSetChanged()
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.refreshEvents()
     }
 }

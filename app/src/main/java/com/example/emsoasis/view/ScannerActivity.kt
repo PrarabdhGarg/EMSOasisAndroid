@@ -36,6 +36,7 @@ class ScannerActivity : AppCompatActivity() {
         val type = intent.getStringExtra("type")
         val eventId = intent.getStringExtra("eventId")
         val teamId = intent.getStringExtra("teamId")
+        Log.d("Info", "$type, $eventId, $teamId")
         scannerViewModel = ViewModelProviders.of(this, ScannerViewModelFactory())[ScannerViewModel::class.java]
 
         if (type == "player") {
@@ -76,8 +77,6 @@ class ScannerActivity : AppCompatActivity() {
             }
         })
 
-        // Add in button
-
        bttn_add.setOnClickListener {
            try {
                when (type) {
@@ -105,8 +104,11 @@ class ScannerActivity : AppCompatActivity() {
        }
 
            codeScanner.errorCallback = ErrorCallback {
-                Toast.makeText(this, "Error in scanning code", Toast.LENGTH_LONG).show()
-               Log.e("Scanner Activity", "Error occoured in Scanning code = ${it.toString()}")
+               runOnUiThread {
+                   Toast.makeText(this, "Error in scanning code", Toast.LENGTH_LONG).show()
+                   Log.e("Scanner Activity", "Error occoured in Scanning code = ${it.toString()}")
+               }
+
            }
 
            scanner.setOnClickListener {

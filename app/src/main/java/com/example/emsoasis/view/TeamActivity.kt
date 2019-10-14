@@ -37,7 +37,7 @@ class TeamActivity : AppCompatActivity(), TeamAdapter.OnTeamClicked {
         addTeam.setOnClickListener {
             startActivity(Intent(this, ScannerActivity::class.java).also {
                 it.putExtra("type", "team")
-                it.putExtra("eventId", event.id)
+                it.putExtra("eventId", event.id.toString())
             })
         }
 
@@ -46,6 +46,12 @@ class TeamActivity : AppCompatActivity(), TeamAdapter.OnTeamClicked {
                 dialog.dismiss()
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        teamViewModel.refreshTeams()
     }
 
     override fun openTeamDetails(teamId: Int) {

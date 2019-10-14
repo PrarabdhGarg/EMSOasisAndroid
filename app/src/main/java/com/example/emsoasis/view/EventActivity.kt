@@ -36,6 +36,13 @@ class EventActivity : AppCompatActivity(), EventsAdapter.OnEventClick {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        eventsViewModel.refreshEvents()
+
+    }
+
     override fun changeActivity(event: EventsData) {
 
         startActivity(Intent(this, TeamActivity::class.java).also {

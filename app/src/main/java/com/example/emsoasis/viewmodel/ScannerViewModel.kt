@@ -23,6 +23,7 @@ class ScannerViewModel(val repo: Repo): ViewModel(){
                 isSuccessful.asMut().postValue(false)
             }
         },{
+            isSuccessful.asMut().postValue(true)
             Log.e("Scanner View Model", "Error in Rx = ${it.message}")
         })
     }
@@ -38,6 +39,7 @@ class ScannerViewModel(val repo: Repo): ViewModel(){
                 isSuccessful.asMut().postValue(false)
             }
         },{
+            isSuccessful.asMut().postValue(true)
             Log.e("Scanner View Model", "Error in Rx = ${it.message}")
         })
     }

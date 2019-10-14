@@ -42,8 +42,10 @@ class LoginViewModel(val loginService: AppService, val sharedPreferences: Shared
                 Log.d("LoginViewModel", "Entered in other than 200.\n${response.code()}")
                 Log.d("LoginViewModel", "Error message = ${JSONObject(response.body().toString())["message"].toString()}")
                 error.asMut().postValue(JSONObject(response.body().toString())["message"].toString())
+                isLoading.asMut().postValue(false)
             }
         },{
+            isLoading.asMut().postValue(false)
             Log.e("LoginViewModel", "Error in Logging in = ${it.toString()}")
         })
     }
